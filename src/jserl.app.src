@@ -1,0 +1,12 @@
+{application, jserl,
+ [
+  {description, "A JavaScript/Erlang bridge library, for web app development."},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { jserl_app, []}},
+  {env, []}
+ ]}.
