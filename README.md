@@ -1,3 +1,6 @@
+JSErl - Erlang/JavaScript Bridge
+================================
+
 Imagine if you could do something like this:
 
     # Erlang                                # JavaScript
@@ -13,5 +16,7 @@ Imagine if you could do something like this:
     > jserl:processes().                    > jserl.processes();
     [<0.123.0>,<0.234.0>]                   [{pid : '0.123.0'}, {pid : '0.234.0'}]
 
-Now, imagine where you could take it. This proof of concept is real and it works. Just
-clone the code and `make run`, and try it out for yourself.
+Now, just imagine what you could build with it!
+
+This proof of concept is real and it works. Just clone out the repository and
+`make run` to try it out for yourself.
