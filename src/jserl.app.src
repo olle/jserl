@@ -1,6 +1,6 @@
 {application, jserl,
  [
-  {description, "A JavaScript/Erlang bridge library, for web app development."},
+  {description, "An Erlang/JavaScript bridge library."},
   {vsn, "0.1.0"},
   {registered, []},
   {applications, [
