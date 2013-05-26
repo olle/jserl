@@ -11,7 +11,9 @@
 -export([init/1]).
 
 %% Public API
--export([processes/0]).
+-export([start/0,
+         spawn/0,
+	 processes/0]).
 
 %% ===================================================================
 %% Application callbacks
@@ -37,8 +39,18 @@ init([]) ->
 %% Public API
 %% ===================================================================
 
+start() ->
+    application:start(crypto),
+    application:start(ranch),
+    application:start(cowboy),
+    application:start(jserl),
+    ok.
+
+spawn() ->
+    ok. %% TODO: Spawn jserl process.
+
 processes() ->
-    [].
+    []. %% TODO: List jserl processes.
 
 %% ===================================================================
 %% Private functions
