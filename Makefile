@@ -8,4 +8,4 @@ clean:
 	@rm -rf ebin
 
 run:
-	@erl -pa deps/*/ebin ebin/
+	@erl -pa `pwd` ./ebin/ ./deps/*/ebin/
