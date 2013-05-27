@@ -21,6 +21,13 @@
 
 %% @private
 start(_StartType, _StartArgs) ->
+    Dispatch = cowboy_router:compile(
+		 [{'_', [{'_', jserl_http, []}]}]),
+    cowboy:start_http(
+      jserl_http_listener,
+      3,
+      [{port, 8911}],
+      [{env, [{dispatch, Dispatch}]}]),
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 %% @private

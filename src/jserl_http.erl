@@ -23,18 +23,17 @@
 
 % Called to know how to dispatch a new connection.
 init({tcp, http}, Req, _Opts) ->
-    lager:debug("Request: ~p", [Req]),
-    % "upgrade" every request to websocket,
-    % we're not interested in serving any other content.
-    {upgrade, protocol, cowboy_http_websocket}.
+    %%{upgrade, protocol, cowboy_websocket}.
+    {ok, Req, undefined_state}.
 
 % Should never get here.
 handle(Req, State) ->
-    lager:debug("Unexpected request: ~p", [Req]),
-    {ok, Req2} = cowboy_http_req:reply(404, [
-        {'Content-Type', <<"text/html">>}
-    ]),
-    {ok, Req2, State}.
+    {ok, Resp} = cowboy_req:reply(200, [], <<"Hello dude!">>, Req),
+    {ok, Resp, State}.
+    %%{ok, Req2} = cowboy_http_req:reply(404, [
+    %%    {'Content-Type', <<"text/html">>}
+    %%]),
+    %%{ok, Req2, State}.
 
 terminate(_Reason, _Req, _State) ->
     ok.
@@ -45,13 +44,11 @@ terminate(_Reason, _Req, _State) ->
 
 % Called for every new websocket connection.
 websocket_init(_Any, Req, []) ->
-    lager:debug("New client"),
     Req2 = cowboy_http_req:compact(Req),
     {ok, Req2, undefined, hibernate}.
 
 % Called when a text message arrives.
 websocket_handle({text, Msg}, Req, State) ->
-    lager:debug("Received: ~p", [Msg]),
     {reply,
         {text, << "Responding to ", Msg/binary >>},
         Req, State, hibernate
