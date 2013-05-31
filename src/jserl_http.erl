@@ -42,27 +42,21 @@ terminate(_Reason, _Req, _State) ->
 %% Cowboy Websocket Handler callbacks
 %% ===================================================================
 
-% Called for every new websocket connection.
-websocket_init(_Any, Req, []) ->
-    Req2 = cowboy_http_req:compact(Req),
-    {ok, Req2, undefined, hibernate}.
-
-% Called when a text message arrives.
+websocket_init(TransportName, Req, _Opts) ->
+    erlang:start_timer(1000, self(), <<"Hello!">>),
+    {ok, Req, undefined_state}.
+ 
 websocket_handle({text, Msg}, Req, State) ->
-    {reply,
-        {text, << "Responding to ", Msg/binary >>},
-        Req, State, hibernate
-    };
-
-% With this callback we can handle other kind of
-% messages, like binary.
-websocket_handle(_Any, Req, State) ->
+    {reply, {text, << "That's what she said! ", Msg/binary >>}, Req, State};
+websocket_handle(_Data, Req, State) ->
     {ok, Req, State}.
-
-% Other messages from the system are handled here.
+ 
+websocket_info({timeout, _Ref, Msg}, Req, State) ->
+    erlang:start_timer(1000, self(), <<"How' you doin'?">>),
+    {reply, {text, Msg}, Req, State};
 websocket_info(_Info, Req, State) ->
-    {ok, Req, State, hibernate}.
-
+    {ok, Req, State}.
+ 
 websocket_terminate(_Reason, _Req, _State) ->
     ok.
 
