@@ -5,7 +5,7 @@ Imagine if you could do something like this:
 
     # Erlang                                # JavaScript
     ---------                               -------------
-    > application:start(jserl).             | Go to: http://localhost:8911/
+    > jserl:start().                        | Go to: http://localhost:8911/
     > jserl:processes().                    |
     []                                      |
     |                                       > jserl.spawn();
