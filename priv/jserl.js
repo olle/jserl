@@ -1,6 +1,8 @@
-(function (global) {
+;(function (global) {
     
     var jserl = global['jserl'] = {};
+
+    jserl.version = '0.1.0';
 
     jserl.spawn = function () {
 	// TODO: Spawn process on server.
