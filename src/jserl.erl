@@ -22,7 +22,19 @@
 %% @private
 start(_StartType, _StartArgs) ->
     Dispatch = cowboy_router:compile(
-		 [{'_', [{'_', jserl_http, []}]}]),
+		 [{'_', [
+			 {"/", cowboy_static,
+			  [{directory, {priv_dir, jserl, []}},
+			   {file, "jserl.html"},
+			   {mimetypes, [{<<".html">>, [<<"text/html">>]}]}
+			  ]},
+			 {"/jserl.js", cowboy_static,
+			  [{directory, {priv_dir, jserl, []}},
+			   {file, "jserl.js"},
+			   {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}
+			  ]},
+			 {'/jserl', jserl_http, []}
+			]}]),
     cowboy:start_http(
       jserl_http_listener,
       3,
