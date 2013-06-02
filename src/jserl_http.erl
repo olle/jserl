@@ -42,7 +42,7 @@ terminate(_Reason, _Req, _State) ->
 %% Cowboy Websocket Handler callbacks
 %% ===================================================================
 
-websocket_init(TransportName, Req, _Opts) ->
+websocket_init(_TransportName, Req, _Opts) ->
     erlang:start_timer(1000, self(), <<"Hello!">>),
     {ok, Req, undefined_state}.
  
