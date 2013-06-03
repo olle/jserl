@@ -24,16 +24,16 @@ start(_StartType, _StartArgs) ->
     Dispatch = cowboy_router:compile(
 		 [{'_', [
 			 {"/", cowboy_static,
-			  [{directory, {priv_dir, jserl, []}},
+			  [{directory, {priv_dir, jserl, []}}, 
 			   {file, "jserl.html"},
-			   {mimetypes, [{<<".html">>, [<<"text/html">>]}]}
-			  ]},
+			   {mimetypes, [{<<".html">>, [<<"text/html">>]}]}]},
+			 
 			 {"/jserl.js", cowboy_static,
 			  [{directory, {priv_dir, jserl, []}},
-			   {file, "jserl.js"},
-			   {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}
-			  ]},
-			 {'/jserl', jserl_http, []}
+			   {file, "jserl.js"}, 
+			   {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}]},
+			 
+			 {"/jserl", jserl_websocket, []}
 			]}]),
     cowboy:start_http(
       jserl_http_listener,
