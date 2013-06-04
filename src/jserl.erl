@@ -1,3 +1,20 @@
+%%% 
+%%% Websocket handler, should initialize socket and spawn a session
+%%% for each connection - is could be re-connected, this is of course
+%%% a bit of a security matter too.
+%%% 
+%%% Spawned sessions then allow for rpc and messaging between jserl
+%%% public API and the JS "process". Will be interesting.
+%%%
+%%% `jserl_session` - module for processes controlling the
+%%%                   connection between a JS client and the Erlang
+%%%                   backend.
+%%%
+%%% `jserl_process` - module for jserl-processes, a decorated process
+%%%                   that is represented with a public API also on
+%%%                   the JS side (spawning, listing, messaging etc).
+%%% 
+
 -module(jserl).
 
 %% Behaviours
