@@ -4,6 +4,9 @@
 compile:
 	@rebar compile
 
+deps:
+	@rebar get-deps
+
 clean:
 	@rm -rf ebin
 
