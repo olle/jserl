@@ -20,3 +20,8 @@ Now, just imagine what you could build with it!
 
 This proof of concept is real and it works. Just clone out the repository and
 `make run` to try it out for yourself.
+
+The General Idea
+----------------
+
+TODO: Write about the idea and vision.

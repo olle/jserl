@@ -1,8 +1,16 @@
 ;(function (global) {
-    
+
     var jserl = global['jserl'] = {};
 
-    jserl.version = '0.1.0';
+    /*
+    var ws = new WebSocket('ws://localhost:8911/jserl/');
+    ws.onopen = console.log;
+    ws.onmessage = console.log;
+    */
+
+    // PUBLIC API
+
+    jserl.VERSION = '0.1.0';
 
     jserl.spawn = function () {
 	// TODO: Spawn process on server.
