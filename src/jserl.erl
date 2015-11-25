@@ -22,7 +22,8 @@
 -behaviour(supervisor).
 
 %% Application callbacks
--export([start/2, stop/1]).
+-export([start/2,
+          stop/1]).
 
 %% Supervisor callbacks
 -export([init/1]).
@@ -30,41 +31,41 @@
 %% Public API
 -export([start/0,
          spawn/0,
-	 processes/0]).
+     processes/0]).
 
 %% ===================================================================
 %% Application callbacks
 %% ===================================================================
 
 %% @private
-start(_StartType, _StartArgs) ->
-    Dispatch = cowboy_router:compile(
-		 [{'_', [
-			 {"/", cowboy_static,
-			  [{directory, {priv_dir, jserl, []}},
-			   {file, "jserl.html"},
-			   {mimetypes, [{<<".html">>, [<<"text/html">>]}]}]},
+start(_Type, _Args) ->
+  Dispatch = cowboy_router:compile([
+    {'_', [
+        {"/", cowboy_static, {priv_file, jserl, "jserl.html"}}
+      , {"/static/[...]", cowboy_static, {priv_dir, jserl, []}}
+      %, {"/bullet", bullet_handler, [{handler, stream_handler}]}
+    ]}
+  ]),
+  {ok, _} = cowboy:start_http(
+    http,
+    3,
+    [{port, 8911}],
+    [{env, [{dispatch, Dispatch}]}]
+  ),
+  supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
-       {"/socket.io.js", cowboy_static,
-        [{directory, {priv_dir, jserl, []}},
-        {file, "socket.io.js"},
-        {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}
-        ]},
-
-			 {"/jserl.js", cowboy_static,
-			  [{directory, {priv_dir, jserl, []}},
-			   {file, "jserl.js"},
-			   {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}
-         ]},
-
-			 {"/jserl", jserl_websocket, []}
-			]}]),
-    cowboy:start_http(
-      jserl_http_listener,
-      3,
-      [{port, 8911}],
-      [{env, [{dispatch, Dispatch}]}]),
-    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+%% @private
+% start(_StartType, _StartArgs) ->
+%     Dispatch = cowboy_router:compile(
+%      [{'_', [
+%        {"/jserl", jserl_websocket, []}
+%       ]}]),
+%     cowboy:start_http(
+%       jserl_http_listener,
+%       3,
+%       [{port, 8911}],
+%       [{env, [{dispatch, Dispatch}]}]),
+%     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 %% @private
 stop(_State) ->
@@ -83,10 +84,11 @@ init([]) ->
 %% ===================================================================
 
 start() ->
-    application:start(crypto),
-    application:start(ranch),
-    application:start(cowboy),
-    application:start(jserl),
+    ok = application:start(crypto),
+    ok = application:start(ranch),
+    ok = application:start(cowlib),
+    ok = application:start(cowboy),
+    ok = application:start(jserl),
     ok.
 
 spawn() ->

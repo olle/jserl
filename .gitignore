@@ -2,3 +2,4 @@ ebin/
 deps/
 .tree
 node_modules/
+.rebar

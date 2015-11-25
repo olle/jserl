@@ -5,16 +5,16 @@
 
 % Cowboy Websocket Handler callbacks
 -export([init/3,
-	 websocket_init/3,
-	 websocket_handle/3,
-	 websocket_info/3,
-	 websocket_terminate/3]).
+   websocket_init/3,
+   websocket_handle/3,
+   websocket_info/3,
+   websocket_terminate/3]).
 
 %% ===================================================================
 %% Cowboy Websocket Handler callbacks
 %% ===================================================================
 
-init({tcp, http}, Req, _Opts) ->
+init({tcp, http}, _Req, _Opts) ->
    {upgrade, protocol, cowboy_websocket}.
 
 websocket_init(_TransportName, Req, _Opts) ->

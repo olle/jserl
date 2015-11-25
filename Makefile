@@ -14,7 +14,7 @@ deps:
 	@rebar get-deps
 
 clean:
-	@rm -rf ebin
+	@rm -rf ebin deps
 
 run:
 	@erl -pa `pwd` ./ebin/ ./deps/*/ebin/

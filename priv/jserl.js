@@ -1,22 +1,23 @@
-(function(global, io) {
+(function(global) {
 	'use strict';
 
 	var jserl = global['jserl'] = {};
 
 	//var ws = new WebSocket('ws://localhost:8911/jserl/');
-	var socket = io('http://localhost:8911/jserl/');
+	//var socket = io('http://localhost:8911/jserl/');
 
-	ws.onopen = function (msg) {
-		console.log(msg);
-	};
-
-	ws.onmessage = function (msg) {
-		//console.info(msg);
-	};
+	// ws.onopen = function (msg) {
+	// 	console.log(msg);
+	// };
+  //
+	// ws.onmessage = function (msg) {
+	// 	//console.info(msg);
+	// };
 
 	// PUBLIC API
 
-	jserl.VERSION = '0.1.0';
+  // TODO: This should be set on connect!
+	jserl.VERSION = '0.2.0';
 
 	jserl.spawn = function() {
 		// TODO: Spawn process on server.
@@ -26,4 +27,4 @@
 		return []; // TODO: Return list of processes.
 	};
 
-})(window || {}, io); // Don't break just yet.
+})(window || {}); // Don't break just yet.
