@@ -1,9 +1,10 @@
-;
-(function(global) {
+(function(global, io) {
+	'use strict';
 
 	var jserl = global['jserl'] = {};
 
-	var ws = new WebSocket('ws://localhost:8911/jserl/');
+	//var ws = new WebSocket('ws://localhost:8911/jserl/');
+	var socket = io('http://localhost:8911/jserl/');
 
 	ws.onopen = function (msg) {
 		console.log(msg);
@@ -11,7 +12,7 @@
 
 	ws.onmessage = function (msg) {
 		//console.info(msg);
-	}
+	};
 
 	// PUBLIC API
 
@@ -25,4 +26,4 @@
 		return []; // TODO: Return list of processes.
 	};
 
-})(window || {}); // Don't break just yet.
+})(window || {}, io); // Don't break just yet.
