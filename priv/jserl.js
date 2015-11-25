@@ -1,23 +1,28 @@
-;(function (global) {
+;
+(function(global) {
 
-    var jserl = global['jserl'] = {};
+	var jserl = global['jserl'] = {};
 
-    /*
-    var ws = new WebSocket('ws://localhost:8911/jserl/');
-    ws.onopen = console.log;
-    ws.onmessage = console.log;
-    */
+	var ws = new WebSocket('ws://localhost:8911/jserl/');
 
-    // PUBLIC API
+	ws.onopen = function (msg) {
+		console.log(msg);
+	};
 
-    jserl.VERSION = '0.1.0';
+	ws.onmessage = function (msg) {
+		//console.info(msg);
+	}
 
-    jserl.spawn = function () {
-	// TODO: Spawn process on server.
-    };
+	// PUBLIC API
 
-    jserl.processes = function () {
-	return []; // TODO: Return list of processes.
-    };
+	jserl.VERSION = '0.1.0';
+
+	jserl.spawn = function() {
+		// TODO: Spawn process on server.
+	};
+
+	jserl.processes = function() {
+		return []; // TODO: Return list of processes.
+	};
 
 })(window || {}); // Don't break just yet.

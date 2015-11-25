@@ -1,0 +1,8 @@
+{
+  "name": "jserl",
+  "license": "MIT",
+  "repository": {},
+  "devDependencies": {
+    "socket.io": "^1.3.7"
+  }
+}
