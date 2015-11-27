@@ -1,29 +1,29 @@
-(function(global, io) {
-	'use strict';
+(function(global) {
+  'use strict';
 
-	var jserl = global['jserl'] = {};
+  var ws = new WebSocket('ws://localhost:8911/jserl/');
 
-	//var ws = new WebSocket('ws://localhost:8911/jserl/');
-	var socket = io('http://localhost:8911/jserl/');
+  ws.onopen = function (msg) {
+    console.log('web socket opened', msg);
+  };
 
-	ws.onopen = function (msg) {
-		console.log(msg);
-	};
+  ws.onmessage = function (msg) {
+    console.info('message arrived', msg);
+  };
 
-	ws.onmessage = function (msg) {
-		//console.info(msg);
-	};
+  // PUBLIC API
 
-	// PUBLIC API
+  var jserl = global.jserl = {};
 
-	jserl.VERSION = '0.1.0';
+  jserl.VERSION = '0.1.0';
 
-	jserl.spawn = function() {
-		// TODO: Spawn process on server.
-	};
+  jserl.spawn = function() {
+    // TODO: Spawn process on server.
+  };
 
-	jserl.processes = function() {
-		return []; // TODO: Return list of processes.
-	};
+  jserl.processes = function() {
+		ws.send('processes');
+    //return []; // TODO: Return list of processes.
+  };
 
-})(window || {}, io); // Don't break just yet.
+})(window || {}); // Don't break just yet.

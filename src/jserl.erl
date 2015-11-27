@@ -30,7 +30,7 @@
 %% Public API
 -export([start/0,
          spawn/0,
-	 processes/0]).
+     processes/0]).
 
 %% ===================================================================
 %% Application callbacks
@@ -39,26 +39,34 @@
 %% @private
 start(_StartType, _StartArgs) ->
     Dispatch = cowboy_router:compile(
-		 [{'_', [
-			 {"/", cowboy_static,
-			  [{directory, {priv_dir, jserl, []}},
-			   {file, "jserl.html"},
-			   {mimetypes, [{<<".html">>, [<<"text/html">>]}]}]},
-
-       {"/socket.io.js", cowboy_static,
-        [{directory, {priv_dir, jserl, []}},
-        {file, "socket.io.js"},
-        {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}
-        ]},
-
-			 {"/jserl.js", cowboy_static,
-			  [{directory, {priv_dir, jserl, []}},
-			   {file, "jserl.js"},
-			   {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}
-         ]},
-
-			 {"/jserl", jserl_websocket, []}
-			]}]),
+     [{'_', [
+        {
+            "/"
+          , cowboy_static
+          , [{directory, {priv_dir, jserl, []}}
+          , {file, "jserl.html"}
+          , {mimetypes, [{<<".html">>, [<<"text/html">>]}]}]
+        },
+        {
+            "/socket.io.js"
+          , cowboy_static
+          , [{directory, {priv_dir, jserl, []}}
+          , {file, "socket.io.js"}
+          , {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}]
+        },
+        {
+            "/jserl.js"
+          , cowboy_static
+          , [{directory, {priv_dir, jserl, []}}
+          , {file, "jserl.js"}
+          , {mimetypes, [{<<".js">>, [<<"application/javascript">>]}]}]
+        },
+        {
+            "/jserl"
+          , jserl_websocket
+          , []
+        }
+      ]}]),
     cowboy:start_http(
       jserl_http_listener,
       3,
