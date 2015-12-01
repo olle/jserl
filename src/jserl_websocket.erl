@@ -22,7 +22,7 @@ websocket_init(_TransportName, Req, _Opts) ->
     {ok, Req, undefined_state}.
 
 websocket_handle({text, <<"processes">>}, Req, State) ->
-		{reply, {text, <<"[]">>}, Req, State};
+		{reply, {binary, []}, Req, State};
 websocket_handle({text, Msg}, Req, State) ->
     {reply, {text, << "That's what she said! ", Msg/binary >>}, Req, State};
 websocket_handle(_Data, Req, State) ->

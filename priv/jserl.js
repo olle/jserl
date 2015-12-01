@@ -1,6 +1,8 @@
 (function(global) {
   'use strict';
 
+	var response = function () {};
+
   var ws = new WebSocket('ws://localhost:8911/jserl/');
 
   ws.onopen = function (msg) {
@@ -9,6 +11,7 @@
 
   ws.onmessage = function (msg) {
     console.info('message arrived', msg);
+		response = function () { return msg.data; };
   };
 
   // PUBLIC API
@@ -23,6 +26,9 @@
 
   jserl.processes = function() {
 		ws.send('processes');
+		return setTimeout(function () {
+			response.call();
+		}, 123);
     //return []; // TODO: Return list of processes.
   };
 
