@@ -16,5 +16,8 @@ deps:
 clean:
 	@rm -rf ebin
 
+clean-deps:
+	@rm -rf deps
+
 run: compile
 	@erl -pa `pwd` ./ebin/ ./deps/*/ebin/

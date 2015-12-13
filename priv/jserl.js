@@ -1,17 +1,24 @@
 (function(global) {
   'use strict';
 
-	var response = function () {};
+  var ws = new WebSocket('ws://0.0.0.0:8911/jserl/');
 
-  var ws = new WebSocket('ws://localhost:8911/jserl/');
-
-  ws.onopen = function (msg) {
-    console.log('web socket opened', msg);
+  ws.onopen = function(evt) {
+    console.log('web socket opened', evt);
+  };
+  ws.onclose = function(evt) {
+    console.log('web socket closed', evt);
+  };
+  ws.onerror = function(evt) {
+    console.log('web socket errored', evt);
   };
 
-  ws.onmessage = function (msg) {
-    console.info('message arrived', msg);
-		response = function () { return msg.data; };
+  var callback = null;
+
+  ws.onmessage = function(evt) {
+    console.log('web socket sent message', evt);
+    (callback || function() {})(evt.data);
+    callback = null;
   };
 
   // PUBLIC API
@@ -24,12 +31,9 @@
     // TODO: Spawn process on server.
   };
 
-  jserl.processes = function() {
-		ws.send('processes');
-		return setTimeout(function () {
-			response.call();
-		}, 123);
-    //return []; // TODO: Return list of processes.
+  jserl.processes = function(_callback) {
+    callback = _callback;
+    ws.send('processes');
   };
 
 })(window || {}); // Don't break just yet.
