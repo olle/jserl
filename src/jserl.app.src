@@ -2,12 +2,12 @@
  [
   {description, "An Erlang/JavaScript bridge library."},
   {vsn, "0.1.0"},
-  {registered, []},
+  {registered, [jserl_sup]},
   {applications, [
       kernel,
       stdlib,
       cowboy
     ]},
-  {mod, { jserl, []}},
+  {mod, {jserl_app, []}},
   {env, []}
  ]}.
