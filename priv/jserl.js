@@ -16,8 +16,9 @@
   var callback = null;
 
   ws.onmessage = function(evt) {
-    console.log('web socket sent message', evt);
-    (callback || function() {})(evt.data);
+    (callback || function(data) {
+      console.log(data);
+    })(evt.data);
     callback = null;
   };
 
@@ -27,8 +28,9 @@
 
   jserl.VERSION = '0.1.0';
 
-  jserl.spawn = function() {
-    // TODO: Spawn process on server.
+  jserl.spawn = function(_callback) {
+    callback = _callback;
+    ws.send('spawn');
   };
 
   jserl.processes = function(_callback) {

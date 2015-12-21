@@ -13,12 +13,17 @@ init(Req, _Opts) ->
   {cowboy_websocket, Req, []}.
 
 websocket_handle({text, <<"processes">>}, Req, State) ->
+  % TODO: Replace this mockup!
   SPid = list_to_binary(pid_to_list(self())),
   In1 = {[{pid, SPid}]},
   Json = jiffy:encode([In1]),
   {reply, {text, Json}, Req, State};
 websocket_handle({text, <<"spawn">>}, Req, State) ->
-  {reply, ok, Req, State};
+  % TODO: Replace this mockup!
+  SPid = list_to_binary(pid_to_list(self())),
+  In1 = {[{pid, SPid}]},
+  Json = jiffy:encode([In1]),
+  {reply, {text, Json}, Req, State};
 websocket_handle({text, Msg}, Req, State) ->
   {reply, {text, << "That's what she said! ", Msg/binary >>}, Req, State};
 websocket_handle(_Data, Req, State) ->

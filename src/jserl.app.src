@@ -4,11 +4,10 @@
   {vsn, "0.1.0"},
   {registered, []},
   {applications, [
-                  kernel,
-                  stdlib,
-		  crypto,
-		  cowboy
-                 ]},
+      kernel,
+      stdlib,
+      cowboy
+    ]},
   {mod, { jserl, []}},
   {env, []}
  ]}.
