@@ -1,39 +1,36 @@
 -module(jserl_websocket).
 
-%% Behaviours
--behaviour(cowboy_websocket_handler).
-
 % Cowboy Websocket Handler callbacks
--export([init/3,
-   websocket_init/3,
-   websocket_handle/3,
-   websocket_info/3,
-   websocket_terminate/3]).
+-export([init/2]).
+-export([websocket_handle/3]).
+-export([websocket_info/3]).
 
 %% ===================================================================
 %% Cowboy Websocket Handler callbacks
 %% ===================================================================
 
-init({tcp, http}, _Req, _Opts) ->
-   {upgrade, protocol, cowboy_websocket}.
+init(Req, _Opts) ->
+  {cowboy_websocket, Req, []}.
 
-websocket_init(_TransportName, Req, _Opts) ->
-    erlang:start_timer(1000, self(), <<"Hello!">>),
-    {ok, Req, undefined_state}.
-
+websocket_handle({text, <<"processes">>}, Req, State) ->
+  % TODO: Replace this mockup!
+  SPid = list_to_binary(pid_to_list(self())),
+  In1 = {[{pid, SPid}]},
+  Json = jiffy:encode([In1]),
+  {reply, {text, Json}, Req, State};
+websocket_handle({text, <<"spawn">>}, Req, State) ->
+  % TODO: Replace this mockup!
+  SPid = list_to_binary(pid_to_list(self())),
+  In1 = {[{pid, SPid}]},
+  Json = jiffy:encode([In1]),
+  {reply, {text, Json}, Req, State};
 websocket_handle({text, Msg}, Req, State) ->
-    {reply, {text, << "That's what she said! ", Msg/binary >>}, Req, State};
+  {reply, {text, << "That's what she said! ", Msg/binary >>}, Req, State};
 websocket_handle(_Data, Req, State) ->
-    {ok, Req, State}.
+  {ok, Req, State}.
 
-websocket_info({timeout, _Ref, Msg}, Req, State) ->
-    erlang:start_timer(1000, self(), <<"How' you doin'?">>),
-    {reply, {text, Msg}, Req, State};
 websocket_info(_Info, Req, State) ->
-    {ok, Req, State}.
-
-websocket_terminate(_Reason, _Req, _State) ->
-    ok.
+  {ok, Req, State}.
 
 %% ===================================================================
 %% Public API

@@ -1,30 +1,41 @@
 (function(global) {
-	'use strict';
+  'use strict';
 
-	var jserl = global['jserl'] = {};
+  var ws = new WebSocket('ws://0.0.0.0:8911/jserl/');
 
-	//var ws = new WebSocket('ws://localhost:8911/jserl/');
-	//var socket = io('http://localhost:8911/jserl/');
+  ws.onopen = function(evt) {
+    console.log('web socket opened', evt);
+  };
+  ws.onclose = function(evt) {
+    console.log('web socket closed', evt);
+  };
+  ws.onerror = function(evt) {
+    console.log('web socket errored', evt);
+  };
 
-	// ws.onopen = function (msg) {
-	// 	console.log(msg);
-	// };
-  //
-	// ws.onmessage = function (msg) {
-	// 	//console.info(msg);
-	// };
+  var callback = null;
 
-	// PUBLIC API
+  ws.onmessage = function(evt) {
+    (callback || function(data) {
+      console.log(data);
+    })(evt.data);
+    callback = null;
+  };
 
-  // TODO: This should be set on connect!
-	jserl.VERSION = '0.2.0';
+  // PUBLIC API
 
-	jserl.spawn = function() {
-		// TODO: Spawn process on server.
-	};
+  var jserl = global.jserl = {};
 
-	jserl.processes = function() {
-		return []; // TODO: Return list of processes.
-	};
+  jserl.VERSION = '0.1.0';
+
+  jserl.spawn = function(_callback) {
+    callback = _callback;
+    ws.send('spawn');
+  };
+
+  jserl.processes = function(_callback) {
+    callback = _callback;
+    ws.send('processes');
+  };
 
 })(window || {}); // Don't break just yet.

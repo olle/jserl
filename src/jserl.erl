@@ -1,20 +1,3 @@
-%%%
-%%% Websocket handler, should initialize socket and spawn a session
-%%% for each connection - is could be re-connected, this is of course
-%%% a bit of a security matter too.
-%%%
-%%% Spawned sessions then allow for rpc and messaging between jserl
-%%% public API and the JS "process". Will be interesting.
-%%%
-%%% `jserl_session` - module for processes controlling the
-%%%                   connection between a JS client and the Erlang
-%%%                   backend.
-%%%
-%%% `jserl_process` - module for jserl-processes, a decorated process
-%%%                   that is represented with a public API also on
-%%%                   the JS side (spawning, listing, messaging etc).
-%%%
-
 -module(jserl).
 
 %% Behaviours
@@ -22,50 +5,35 @@
 -behaviour(supervisor).
 
 %% Application callbacks
--export([start/2,
-          stop/1]).
+-export([start/2]).
+-export([stop/1]).
 
 %% Supervisor callbacks
 -export([init/1]).
 
 %% Public API
--export([start/0,
-         spawn/0,
-     processes/0]).
+-export([start/0]).
+-export([spawn/0]).
+-export([processes/0]).
 
 %% ===================================================================
 %% Application callbacks
 %% ===================================================================
 
 %% @private
-start(_Type, _Args) ->
+start(_StartType, _StartArgs) ->
   Dispatch = cowboy_router:compile([
     {'_', [
-        {"/", cowboy_static, {priv_file, jserl, "jserl.html"}}
-      , {"/static/[...]", cowboy_static, {priv_dir, jserl, []}}
-      %, {"/bullet", bullet_handler, [{handler, stream_handler}]}
+        {"/",            cowboy_static, {priv_file, jserl, "jserl.html"}}
+      , {"/favicon.ico", cowboy_static, {priv_file, jserl, "favicon.ico"}}
+      , {"/jserl.js",    cowboy_static, {priv_file, jserl, "jserl.js"}}
+      , {"/jserl/",      jserl_websocket, []}
     ]}
   ]),
-  {ok, _} = cowboy:start_http(
-    http,
-    3,
+  {ok, _} = cowboy:start_http(jserl_http_listener, 1,
     [{port, 8911}],
-    [{env, [{dispatch, Dispatch}]}]
-  ),
+    [{env, [{dispatch, Dispatch}]}]),
   supervisor:start_link({local, ?MODULE}, ?MODULE, []).
-
-%% @private
-% start(_StartType, _StartArgs) ->
-%     Dispatch = cowboy_router:compile(
-%      [{'_', [
-%        {"/jserl", jserl_websocket, []}
-%       ]}]),
-%     cowboy:start_http(
-%       jserl_http_listener,
-%       3,
-%       [{port, 8911}],
-%       [{env, [{dispatch, Dispatch}]}]),
-%     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 %% @private
 stop(_State) ->
