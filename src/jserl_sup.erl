@@ -15,7 +15,10 @@
 
 %% @private
 init([]) ->
-  Procs = [],
+  Procs = [
+    #{id => jserl_server,
+      start => {jserl_server, start_link, []}}
+  ],
   {ok, { {one_for_one, 5, 10}, Procs} }.
 
 %% ===================================================================

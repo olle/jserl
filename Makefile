@@ -1,20 +1,14 @@
 
 .PHONY: compile
 
-compile: priv/socket.io.js
+compile:
 	@rebar compile
-
-priv/socket.io.js: node_modules/
-	@cp ./node_modules/socket.io-client/socket.io.js $@
-
-node_modules/:
-	@npm install
 
 deps:
 	@rebar get-deps
 
 clean:
-	@rm -rf ebin deps
+	@rm -rf ebin
 
 clean-deps:
 	@rm -rf deps
