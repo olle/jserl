@@ -8,6 +8,7 @@
 
 %% Public API
 -export([start_link/0]).
+-export([spawn/0]).
 
 %% ===================================================================
 %% Supervisor callbacks
@@ -27,3 +28,8 @@ init([]) ->
 
 start_link() ->
   supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
+spawn() ->
+  Proc = #{id => os:timestamp(),
+           start => {jserl_process, start_link, []}},
+  supervisor:start_child(?MODULE, Proc).

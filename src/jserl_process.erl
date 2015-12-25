@@ -1,4 +1,4 @@
--module(jserl_server).
+-module(jserl_process).
 
 %% Behaviours
 -behaviour(gen_server).
@@ -13,8 +13,6 @@
 
 %% Public API
 -export([start_link/0]).
--export([spawn/0]).
--export([processes/0]).
 
 %% ===================================================================
 %% Callbacks for gen_server
@@ -22,18 +20,13 @@
 
 %% @private
 init(_Args) ->
-  %% TODO: Remove mock state!
-  {ok, [foo, bar, baz]}.
+  {ok, []}.
 
 %% @private
 terminate(_Reason, _State) ->
   ok.
 
 %% @private
-handle_call(processes, _From, State) ->
-  {reply, {ok, State}, State};
-handle_call(spawn, _From, State) ->
-  {reply, jserl_sup:spawn(), State};
 handle_call(_Request, _From, State) ->
   {noreply, State}.
 
@@ -54,10 +47,4 @@ code_change(_OldVsn, State, _Extra) ->
 %% ===================================================================
 
 start_link() ->
-  gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
-
-spawn() ->
-  gen_server:call(?MODULE, spawn).
-
-processes() ->
-  gen_server:call(?MODULE, processes).
+  gen_server:start_link(?MODULE, [], []).
