@@ -17,8 +17,8 @@
 
   ws.onmessage = function(evt) {
     (callback || function(data) {
-      console.log(data);
-    })(evt.data);
+      console.log(JSON.stringify(data));
+    })(JSON.parse(evt.data));
     callback = null;
   };
 

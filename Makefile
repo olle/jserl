@@ -13,5 +13,8 @@ clean:
 clean-deps:
 	@rm -rf deps
 
-run: compile
+test: compile
+	@rebar eunit
+
+run: compile test
 	@erl -pa `pwd` ./ebin/ ./deps/*/ebin/
