@@ -22,8 +22,7 @@
 
 %% @private
 init(_Args) ->
-  %% TODO: Remove mock state!
-  {ok, [foo, bar, baz]}.
+  {ok, []}.
 
 %% @private
 terminate(_Reason, _State) ->
@@ -33,7 +32,9 @@ terminate(_Reason, _State) ->
 handle_call(processes, _From, State) ->
   {reply, {ok, State}, State};
 handle_call(spawn, _From, State) ->
-  {reply, jserl_sup:spawn(), State};
+  {ok, Pid} = jserl_sup:spawn(),
+  State2 = State ++ [Pid],
+  {reply, {ok, Pid}, State2};
 handle_call(_Request, _From, State) ->
   {noreply, State}.
 
